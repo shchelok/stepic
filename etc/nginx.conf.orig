@@ -1,0 +1,17 @@
+server {
+
+ listen 80 default_server;
+ listen [::]:80 default_server;
+ server_name _;
+ root /home/box/;
+ index index.html;
+ index index.html index.htm index.nginx-debian.html;
+ location ~* \.jpg$ {
+  root /home/box/web/public/;
+ }
+ location ^~ /uploads/ {
+  root /home/box/web/;
+ }
+
+}
+

@@ -1,0 +1,137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+	<meta charset="UTF-8">
+	<title>Document</title>
+	  <style type="text/css">
+    td.selected{
+      background-color: red !important;
+    }
+    .active{
+      background-color: blue !important;
+    }
+  </style>
+	</head>
+<body>
+  <script>
+
+    function CrateTable(cows, rolls, width, height) {
+      this.i = 0;
+      this.j = 0;
+      // пробовал реализовать создание буквенной координаты через функцию
+      //  var m= function(j){  for (i=97; i<j+97; i++) {p = new Object(j-1); 
+      //p[i-97]=(String.fromCharCode(i))}for (i=0; i<j; i++) {return(p[0])}}
+
+      var m= ['a','b','c','d','r','f','g','h'];
+      this.width = width;
+      this.height = height;
+      var table = document.createElement("table");
+      document.body.appendChild(table);
+      table.setAttribute("width", this.width);
+      table.setAttribute("height", this.height);
+      table.setAttribute('id', 'table');
+      table.style.border = '1px solid black';
+      table.style.borderCollapse = 'collapse';
+      // рисуем таблицу и красим
+      for (var i=0; i<8; i++){
+          var tr = document.createElement('tr');
+          var k;
+          if (i%2==0){k=0}
+          else k=1
+          for (var j=0; j<8; j++){
+            var td = document.createElement('td');
+            tr.appendChild(td);
+            var g=0;
+            if (j==k){
+              td.style.backgroundColor = 'green';
+              k+=2;
+             }
+             else{td.style.backgroundColor = 'yellow';}
+            td.style.border = '1px solid black';
+            var xy = m[j] + (i+1);
+            td.setAttribute('id', xy);
+          }
+          table.appendChild(tr);
+          k++;
+        }
+        var selectedTd;
+        var output;
+
+        table.onclick = function(event) {
+          var target = event.target; // где был клик?
+
+          if (target.tagName != 'TD') return; // не на TD? тогда не интересует
+
+          collorRed(target); // подсветить TD
+          if (output){output.innerHTML = 'Координаты ячейки = ' + target.id;}
+          else{
+            output = document.createElement('p');
+            document.body.appendChild(output);
+            var selectedXY = event.target;
+            output.innerHTML = 'Координаты ячейки = ' + target.id;
+          }
+          
+          }
+          function collorRed(node) {
+              if (selectedTd) {
+                selectedTd.removeAttribute('class','selected'); // удaляем стиль 'red'
+                
+              }
+              selectedTd = node;
+              selectedTd.setAttribute('class','selected'); // add style 'background-color: red'
+              }
+          // перемещение цвета по таблице
+          function changeCollor(i, j, flag){
+         var element = document.getElementById('table').children[j].children[i];
+          //var element = table.children[j].children[i];
+          if(flag) element.className = 'active';
+          else element.className = '';
+        }
+
+        var pos_i = 0, pos_j = 0;
+        window.onkeydown = function(event){
+          changeCollor(pos_i, pos_j, false);
+          switch(event.keyCode) {
+            case 37://left
+            if(pos_i ==0) pos_i=7;
+            else pos_i--;
+            break;
+            case 38: // top
+            if(pos_j==0) pos_j=7;
+            else pos_j--;
+            break;
+            case 39: //right
+            if(pos_i==7) pos_i = 0;
+            else pos_i++;
+            break;
+            case 40: //bottom
+            if (pos_j==7) pos_j = 0;
+            else pos_j++;
+            break;
+          }
+          changeCollor(pos_i, pos_j, true);
+
+        }
+          }
+  window.onload = function() {
+      var table =new CrateTable(8,8,100,100);
+    }
+    //var str = 'Привет мир!';
+    function changeText() {
+    String.prototype.addToElement = function(ht,collor){
+    var sstr = document.getElementById('tt'),
+        str = str.value;
+    var elem  = document.createElement(ht);
+    elem.setAttribute('class', collor);
+    elem.innerHTML = this;
+    document.body.appendChild(elem);
+    alert(this);
+    }
+    
+    str.addToElement('div','red');
+  }
+  </script>
+<input type="text" id='tt' value="Привет мир!" ></input>
+<input type="button" onclick='changeText'></input>
+</body>
+</html>
