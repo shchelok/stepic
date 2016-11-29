@@ -2,7 +2,7 @@ from django.db import models
 from django.contrib.auth.models import User
 
 
-class QuestionManager(models.Model):
+class QuestionManager(models.Manager):
         def new():
                 new = Question.objects
                 new = new.order_by('added_at')
